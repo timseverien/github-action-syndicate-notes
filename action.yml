@@ -1,0 +1,39 @@
+name: 'Syndicate notes'
+description: 'Publish content elsewhere'
+author: 'Tim Severien'
+
+branding:
+  color: purple
+  icon: upload-cloud
+
+inputs:
+  cacheDirectory:
+    description: 'Path to the directory where cache files are stored'
+    default: .cache/syndicate-notes
+
+  contentFormat:
+    description: ''
+    default: '{{content}} {{url}}'
+
+  feedType:
+    description: 'The feed type of feedUrl'
+    default: jsonfeed
+  feedUrl:
+    description: 'Feed URL where the notes are in'
+    required: true
+
+  # Discord
+  discordWebhookId:
+    description: 'The ID of the Discord Webhook'
+  discordWebhookToken:
+    description: 'The token of the Discord Webhook'
+
+  # Mastodon
+  mastodonInstance:
+    description: 'The root URL of the Mastodon instance where the toot should be created'
+  mastodonAccessToken:
+    description: 'Your access token for the Mastodon API, get it from /settings/applications/new'
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
