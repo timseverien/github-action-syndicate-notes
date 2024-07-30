@@ -18,19 +18,19 @@ jobs:
       - name: 📂 Sync files
         uses: timseverien/syndicate-notes
         with:
-					feedType: jsonfeed
-					feedUrl: https://tsev.dev/notes/feed.json
+          feedType: jsonfeed
+          feedUrl: https://tsev.dev/notes/feed.json
 
-					# Optional: format the message - allows you to add prefixes and suffixes
+          # Optional: format the message - allows you to add prefixes and suffixes
           # contentFormat: '{{content}} {{url}}'
 
-					# Optional: change the cache directory used to track what’s published
+          # Optional: change the cache directory used to track what’s published
           # cacheDirectory: .cache/syndicate-notes
 
-					# Integration details
-					# These are all optional — omit the integrations you don’t want to publish to
-					discordWebhookId: '...'
-					discordWebhookToken: '...'
-					mastodonInstance: 'https://mastodon.social'
-					mastodonAccessToken: '...'
+          # Integration details
+          # These are all optional — omit the integrations you don’t want to publish to
+          discordWebhookId: '...'
+          discordWebhookToken: '...'
+          mastodonInstance: 'https://mastodon.social'
+          mastodonAccessToken: '...'
 ```
