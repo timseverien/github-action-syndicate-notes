@@ -33,4 +33,8 @@ jobs:
           discordWebhookToken: '...'
           mastodonInstance: 'https://mastodon.social'
           mastodonAccessToken: '...'
+
+      # Required to persist cache
+      - name: Commit and push
+        uses: stefanzweifel/git-auto-commit-action@v4
 ```
