@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "ncc build src/index.ts",
+    "build": "ncc build src/index.ts --minify",
     "dev": "npm run test:watch",
     "lint": "eslint src/**/*.ts",
     "test": "vitest --run",
