@@ -9,11 +9,11 @@ import { getMessages as getMessagesFromJsonFeed } from '@/lib/sources/jsonfeed';
 import * as core from '@actions/core';
 import {
 	type PublishOptions as SyndicateOptions,
+	createDiscordIntegration,
+	createMastodonIntegration,
 	publish as syndicate,
 } from '@tsev/social-gateway';
 import type { Integration } from '@tsev/social-gateway/integrations/common';
-import { createDiscordIntegration } from '@tsev/social-gateway/integrations/discord/index';
-import { createMastodonIntegration } from '@tsev/social-gateway/integrations/mastodon/index';
 import { z } from 'zod';
 
 export function createIntegrationOrNull<
