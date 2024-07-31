@@ -27521,8 +27521,10 @@ __nccwpck_require__.a(module, async (__webpack_handle_async_dependencies__, __we
 /* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(2186);
 /* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__nccwpck_require__.n(_actions_core__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _tsev_social_gateway__WEBPACK_IMPORTED_MODULE_3__ = __nccwpck_require__(9863);
-/* harmony import */ var _tsev_social_gateway_integrations_discord_index__WEBPACK_IMPORTED_MODULE_4__ = __nccwpck_require__(2345);
-/* harmony import */ var _tsev_social_gateway_integrations_mastodon_index__WEBPACK_IMPORTED_MODULE_5__ = __nccwpck_require__(4288);
+/* harmony import */ var _tsev_social_gateway_integrations_discord_index__WEBPACK_IMPORTED_MODULE_4__ = __nccwpck_require__(6808);
+/* harmony import */ var _tsev_social_gateway_integrations_discord_index__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__nccwpck_require__.n(_tsev_social_gateway_integrations_discord_index__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _tsev_social_gateway_integrations_mastodon_index__WEBPACK_IMPORTED_MODULE_5__ = __nccwpck_require__(2049);
+/* harmony import */ var _tsev_social_gateway_integrations_mastodon_index__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__nccwpck_require__.n(_tsev_social_gateway_integrations_mastodon_index__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var zod__WEBPACK_IMPORTED_MODULE_6__ = __nccwpck_require__(2300);
 
 
@@ -27543,11 +27545,11 @@ const FEED_PARSE_MAP = {
     jsonfeed: _lib_sources_jsonfeed__WEBPACK_IMPORTED_MODULE_1__/* .getMessages */ ._,
 };
 const integrations = [
-    createIntegrationOrNull(['discordWebhookId', 'discordWebhookToken'], (inputs) => (0,_tsev_social_gateway_integrations_discord_index__WEBPACK_IMPORTED_MODULE_4__/* .createDiscordIntegration */ .b)({
+    createIntegrationOrNull(['discordWebhookId', 'discordWebhookToken'], (inputs) => (0,_tsev_social_gateway_integrations_discord_index__WEBPACK_IMPORTED_MODULE_4__.createDiscordIntegration)({
         webhookId: inputs.discordWebhookId,
         webhookToken: inputs.discordWebhookToken,
     })),
-    createIntegrationOrNull(['mastodonInstance', 'mastodonAccessToken'], (inputs) => (0,_tsev_social_gateway_integrations_mastodon_index__WEBPACK_IMPORTED_MODULE_5__/* .createMastodonIntegration */ .d)({
+    createIntegrationOrNull(['mastodonInstance', 'mastodonAccessToken'], (inputs) => (0,_tsev_social_gateway_integrations_mastodon_index__WEBPACK_IMPORTED_MODULE_5__.createMastodonIntegration)({
         accessToken: inputs.mastodonAccessToken,
         instanceUrl: inputs.mastodonInstance,
     })),
@@ -27577,7 +27579,7 @@ try {
     let isMessageFailed = false;
     for (const message of messages) {
         try {
-            await (0,_tsev_social_gateway__WEBPACK_IMPORTED_MODULE_3__/* .publish */ .n)(message, options);
+            await (0,_tsev_social_gateway__WEBPACK_IMPORTED_MODULE_3__/* .publish */ .nY)(message, options);
         }
         catch (error) {
             _actions_core__WEBPACK_IMPORTED_MODULE_2__.error(`Unable to syndicate message ${message.id}`);
@@ -28597,6 +28599,22 @@ const getMessages = async (url, { format, filter }) => {
         throw new Error(`Unable to read feed ${url}`);
     }
 };
+
+
+/***/ }),
+
+/***/ 6808:
+/***/ ((module) => {
+
+module.exports = eval("require")("@tsev/social-gateway/integrations/discord/index");
+
+
+/***/ }),
+
+/***/ 2049:
+/***/ ((module) => {
+
+module.exports = eval("require")("@tsev/social-gateway/integrations/mastodon/index");
 
 
 /***/ }),
@@ -31237,300 +31255,271 @@ module.exports = class ISO6391 {
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __nccwpck_require__) => {
 
 /* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
-/* harmony export */   "n": () => (/* binding */ publish)
+/* harmony export */   "nY": () => (/* binding */ publish)
 /* harmony export */ });
+/* unused harmony exports createDiscordIntegration, createMastodonIntegration */
 /* harmony import */ var iso_639_1__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(472);
-
-async function publish(message, options) {
-    if (message.language && !iso_639_1__WEBPACK_IMPORTED_MODULE_0__.validate(message.language)) {
-        throw new Error('MESSAGE_LANGUAGE_INVALID');
-    }
-    const validationResults = await Promise.all(options.integrations.map((integration) => integration.validate(message)));
-    const hasValidationError = validationResults.some((result) => result !== 'VALID');
-    // Currently uses an all-or-nothing strategy - if validation fails for one integration, no message is sent
-    if (hasValidationError) {
-        console.log(validationResults);
-        throw new Error('MESSAGE_VALIDATION_ERROR');
-    }
-    await Promise.all(options.integrations.map((i) => i.publish(message)));
-}
+/* harmony import */ var node_path__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(9411);
 
 
-/***/ }),
-
-/***/ 5151:
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __nccwpck_require__) => {
-
-/* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
-/* harmony export */   "d9": () => (/* binding */ createHttpClient)
-/* harmony export */ });
-/* unused harmony exports omitHeaders, mergeHeaders, mergeRequestOptions */
 function omitHeaders(headers, omit) {
-    if (!headers) {
-        return headers;
-    }
-    const entries = Array.from(headers.entries());
-    const omitNormalized = omit.map((k) => k.toLocaleLowerCase());
-    return new Headers(entries.filter(([key]) => !omitNormalized.includes(key.toLocaleLowerCase())));
+  if (!headers) {
+    return headers;
+  }
+  const entries = Array.from(headers.entries());
+  const omitNormalized = omit.map((k) => k.toLocaleLowerCase());
+  return new Headers(
+    entries.filter(
+      ([key]) => !omitNormalized.includes(key.toLocaleLowerCase())
+    )
+  );
 }
 function mergeHeaders(a, b) {
-    return new Headers({
-        ...(a ? Object.fromEntries(a.entries()) : null),
-        ...(b ? Object.fromEntries(b.entries()) : null),
-    });
+  return new Headers({
+    ...a ? Object.fromEntries(a.entries()) : null,
+    ...b ? Object.fromEntries(b.entries()) : null
+  });
 }
 function mergeRequestOptions(a, b) {
-    const result = { ...a, ...b };
-    if (a.headers || b.headers) {
-        const baseHeaders = b.omitBaseHeaders
-            ? omitHeaders(a.headers, b.omitBaseHeaders)
-            : a.headers;
-        result.headers = mergeHeaders(baseHeaders, b.headers);
-    }
-    return result;
+  const result = { ...a, ...b };
+  if (a.headers || b.headers) {
+    const baseHeaders = b.omitBaseHeaders ? omitHeaders(a.headers, b.omitBaseHeaders) : a.headers;
+    result.headers = mergeHeaders(baseHeaders, b.headers);
+  }
+  return result;
 }
 function createHttpClient(baseUrl, baseOptions = {}) {
-    const request = (path, options) => {
-        const url = new URL(path, baseUrl);
-        return fetch(url, options);
-    };
-    return {
-        async get(path, options = {}) {
-            return request(path, {
-                ...mergeRequestOptions(baseOptions, options),
-                method: 'GET',
-            });
-        },
-        async post(path, options = {}) {
-            return request(path, {
-                ...mergeRequestOptions(baseOptions, options),
-                method: 'POST',
-            });
-        },
-    };
+  const request = (path2, options) => {
+    const url = new URL(path2, baseUrl);
+    return fetch(url, options);
+  };
+  return {
+    async get(path2, options = {}) {
+      return request(path2, {
+        ...mergeRequestOptions(baseOptions, options),
+        method: "GET"
+      });
+    },
+    async post(path2, options = {}) {
+      return request(path2, {
+        ...mergeRequestOptions(baseOptions, options),
+        method: "POST"
+      });
+    }
+  };
 }
-
-
-/***/ }),
-
-/***/ 2345:
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __nccwpck_require__) => {
-
-
-// EXPORTS
-__nccwpck_require__.d(__webpack_exports__, {
-  "b": () => (/* binding */ createDiscordIntegration)
-});
-
-// EXTERNAL MODULE: ./node_modules/@tsev/social-gateway/dist/infrastructure/http.client.js
-var http_client = __nccwpck_require__(5151);
-;// CONCATENATED MODULE: ./node_modules/@tsev/social-gateway/dist/integrations/discord/client.js
-
 function createDiscordClient() {
-    const httpClient = (0,http_client/* createHttpClient */.d9)(new URL('https://discord.com'), {
-        headers: new Headers({
-            'content-type': 'application/json',
-        }),
-    });
-    return httpClient;
+  const httpClient = createHttpClient(new URL("https://discord.com"), {
+    headers: new Headers({
+      "content-type": "application/json"
+    })
+  });
+  return httpClient;
 }
 function isPayloadWithFiles(payload) {
-    return 'files' in payload;
+  return "files" in payload;
 }
-// See:https://discord.com/developers/docs/resources/webhook#execute-webhook
 async function sendMessage(client, options, data) {
-    if (isPayloadWithFiles(data) && data.files.length > 0) {
-        return sendMessageWithFiles(client, options, data);
-    }
-    return sendMessageWithoutFiles(client, options, data);
+  if (isPayloadWithFiles(data) && data.files.length > 0) {
+    return sendMessageWithFiles(client, options, data);
+  }
+  return sendMessageWithoutFiles(client, options, data);
 }
 async function sendMessageWithFiles(client, options, data) {
-    const formData = new FormData();
-    for (const [index, file] of data.files.entries()) {
-        formData.set(`files[${index}]`, new Blob([file.content]), file.name);
+  const formData = new FormData();
+  for (const [index, file] of data.files.entries()) {
+    formData.set(`files[${index}]`, new Blob([file.content]), file.name);
+  }
+  formData.set(
+    "payload_json",
+    JSON.stringify({
+      content: data.content,
+      attachments: data.files.map((file, index) => ({
+        id: index,
+        description: file.description,
+        filename: file.name
+      }))
+    })
+  );
+  const response = await client.post(
+    `/api/webhooks/${options.webhookId}/${options.webhookToken}`,
+    {
+      omitBaseHeaders: ["content-type"],
+      body: formData
     }
-    formData.set('payload_json', JSON.stringify({
-        content: data.content,
-        attachments: data.files.map((file, index) => ({
-            id: index,
-            description: file.description,
-            filename: file.name,
-        })),
-    }));
-    const response = await client.post(`/api/webhooks/${options.webhookId}/${options.webhookToken}`, {
-        omitBaseHeaders: ['content-type'],
-        body: formData,
-    });
-    if (!response.ok) {
-        console.log(response.status);
-        console.log(await response.text());
-        throw new Error('INTEGRATION_PUBLISH_FAILED');
-    }
+  );
+  if (!response.ok) {
+    console.log(response.status);
+    console.log(await response.text());
+    throw new Error("INTEGRATION_PUBLISH_FAILED");
+  }
 }
 async function sendMessageWithoutFiles(client, options, data) {
-    const response = await client.post(`/api/webhooks/${options.webhookId}/${options.webhookToken}`, {
-        body: JSON.stringify(data),
-    });
-    if (!response.ok) {
-        console.log(response.status);
-        console.log(await response.text());
-        throw new Error('INTEGRATION_PUBLISH_FAILED');
+  const response = await client.post(
+    `/api/webhooks/${options.webhookId}/${options.webhookToken}`,
+    {
+      body: JSON.stringify(data)
     }
+  );
+  if (!response.ok) {
+    console.log(response.status);
+    console.log(await response.text());
+    throw new Error("INTEGRATION_PUBLISH_FAILED");
+  }
 }
-
-// EXTERNAL MODULE: external "node:path"
-var external_node_path_ = __nccwpck_require__(9411);
-;// CONCATENATED MODULE: ./node_modules/@tsev/social-gateway/dist/integrations/discord/service.js
-
-const SUPPORTED_MEDIA_TYPES = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
-async function validateMessage(message) {
-    if (message.content.length === 0) {
-        return 'CONTENT_TOO_SHORT';
+const SUPPORTED_MEDIA_TYPES$1 = (/* unused pure expression or super */ null && (["jpg", "jpeg", "png", "webp", "gif"]));
+async function validateMessage$1(message) {
+  if (message.content.length === 0) {
+    return "CONTENT_TOO_SHORT";
+  }
+  if (message.media) {
+    for (const media of message.media) {
+      if (!SUPPORTED_MEDIA_TYPES$1.includes(path.extname(media.name).substring(1))) {
+        return "MEDIA_UNSUPPORTED";
+      }
     }
-    if (message.media) {
-        for (const media of message.media) {
-            if (!SUPPORTED_MEDIA_TYPES.includes(external_node_path_.extname(media.name).substring(1))) {
-                return 'MEDIA_UNSUPPORTED';
-            }
-        }
-        if (message.media.length > 10) {
-            return 'MEDIA_TOO_MANY';
-        }
+    if (message.media.length > 10) {
+      return "MEDIA_TOO_MANY";
     }
-    return 'VALID';
+  }
+  return "VALID";
 }
-
-;// CONCATENATED MODULE: ./node_modules/@tsev/social-gateway/dist/integrations/discord/index.js
-
-
 function createDiscordIntegration(webhookOptions) {
-    const client = createDiscordClient();
-    return {
-        validate: validateMessage,
-        publish: (message) => sendMessage(client, webhookOptions, {
-            content: message.content,
-            files: message.media?.map((m) => ({
-                content: m.data,
-                description: m.description,
-                name: m.name,
-            })) ?? [],
-        }),
-    };
+  const client = createDiscordClient();
+  return {
+    validate: validateMessage$1,
+    publish: (message) => {
+      var _a;
+      return sendMessage(client, webhookOptions, {
+        content: message.content,
+        files: ((_a = message.media) == null ? void 0 : _a.map((m) => ({
+          content: m.data,
+          description: m.description,
+          name: m.name
+        }))) ?? []
+      });
+    }
+  };
 }
-
-
-/***/ }),
-
-/***/ 4288:
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __nccwpck_require__) => {
-
-
-// EXPORTS
-__nccwpck_require__.d(__webpack_exports__, {
-  "d": () => (/* binding */ createMastodonIntegration)
-});
-
-// EXTERNAL MODULE: ./node_modules/@tsev/social-gateway/dist/infrastructure/http.client.js
-var http_client = __nccwpck_require__(5151);
-;// CONCATENATED MODULE: ./node_modules/@tsev/social-gateway/dist/integrations/mastodon/client.js
-
 function createMastodonClient(instanceUrl, clientOptions) {
-    const url = new URL(instanceUrl);
-    return (0,http_client/* createHttpClient */.d9)(url, {
-        headers: new Headers({
-            Authorization: `Bearer ${clientOptions.accessToken}`,
-            'Content-Type': 'application/json',
-        }),
-    });
+  const url = new URL(instanceUrl);
+  return createHttpClient(url, {
+    headers: new Headers({
+      Authorization: `Bearer ${clientOptions.accessToken}`,
+      "Content-Type": "application/json"
+    })
+  });
 }
-// See: https://docs.joinmastodon.org/methods/statuses/#create
 async function publishStatus(client, options, data) {
-    const headers = new Headers();
-    if (options.idempotencyKey) {
-        headers.set('Idempotency-Key', options.idempotencyKey);
-    }
-    const response = await client.post('/api/v1/statuses', {
-        headers,
-        body: JSON.stringify({
-            status: data.status,
-            ...(data.language ? { language: data.language } : null),
-            ...(data.mediaIds?.length ? { media_ids: data.mediaIds } : null),
-        }),
-    });
-    if (!response.ok) {
-        console.log(response.status);
-        console.log(await response.text());
-        throw new Error('INTEGRATION_PUBLISH_FAILED');
-    }
+  var _a;
+  const headers = new Headers();
+  if (options.idempotencyKey) {
+    headers.set("Idempotency-Key", options.idempotencyKey);
+  }
+  const response = await client.post("/api/v1/statuses", {
+    headers,
+    body: JSON.stringify({
+      status: data.status,
+      ...data.language ? { language: data.language } : null,
+      ...((_a = data.mediaIds) == null ? void 0 : _a.length) ? { media_ids: data.mediaIds } : null
+    })
+  });
+  if (!response.ok) {
+    console.log(response.status);
+    console.log(await response.text());
+    throw new Error("INTEGRATION_PUBLISH_FAILED");
+  }
 }
 async function uploadMedia(client, options, data) {
-    const headers = new Headers();
-    if (options.idempotencyKey) {
-        headers.set('idempotency-key', options.idempotencyKey);
-    }
-    const formData = new FormData();
-    formData.set('file', new Blob([data.file]));
-    formData.set('description', data.description);
-    const response = await client.post('/api/v2/media', {
-        omitBaseHeaders: ['content-type'],
-        headers,
-        body: formData,
-    });
-    if (!response.ok) {
-        console.log(response.status);
-        console.log(await response.text());
-        throw new Error('INTEGRATION_MEDIA_UPLOAD_FAILED');
-    }
-    const { id } = (await response.json());
-    return {
-        id,
-    };
+  const headers = new Headers();
+  if (options.idempotencyKey) {
+    headers.set("idempotency-key", options.idempotencyKey);
+  }
+  const formData = new FormData();
+  formData.set("file", new Blob([data.file]));
+  formData.set("description", data.description);
+  const response = await client.post("/api/v2/media", {
+    omitBaseHeaders: ["content-type"],
+    headers,
+    body: formData
+  });
+  if (!response.ok) {
+    console.log(response.status);
+    console.log(await response.text());
+    throw new Error("INTEGRATION_MEDIA_UPLOAD_FAILED");
+  }
+  const { id } = await response.json();
+  return {
+    id
+  };
 }
-
-// EXTERNAL MODULE: external "node:path"
-var external_node_path_ = __nccwpck_require__(9411);
-;// CONCATENATED MODULE: ./node_modules/@tsev/social-gateway/dist/integrations/mastodon/service.js
-
-const SUPPORTED_MEDIA_TYPES = ['jpg', 'jpeg', 'png'];
+const SUPPORTED_MEDIA_TYPES = (/* unused pure expression or super */ null && (["jpg", "jpeg", "png"]));
 async function validateMessage(message) {
-    if (message.content.length === 0) {
-        return 'CONTENT_TOO_SHORT';
+  if (message.content.length === 0) {
+    return "CONTENT_TOO_SHORT";
+  }
+  if (message.media) {
+    for (const media of message.media) {
+      if (!SUPPORTED_MEDIA_TYPES.includes(path.extname(media.name).substring(1))) {
+        return "MEDIA_UNSUPPORTED";
+      }
     }
-    if (message.media) {
-        for (const media of message.media) {
-            if (!SUPPORTED_MEDIA_TYPES.includes(external_node_path_.extname(media.name).substring(1))) {
-                return 'MEDIA_UNSUPPORTED';
-            }
-        }
-        if (message.media.length > 10) {
-            return 'MEDIA_TOO_MANY';
-        }
+    if (message.media.length > 10) {
+      return "MEDIA_TOO_MANY";
     }
-    return 'VALID';
+  }
+  return "VALID";
 }
-
-;// CONCATENATED MODULE: ./node_modules/@tsev/social-gateway/dist/integrations/mastodon/index.js
-
-
 function createMastodonIntegration(options) {
-    const client = createMastodonClient(options.instanceUrl, {
-        accessToken: options.accessToken,
-    });
-    return {
-        validate: validateMessage,
-        async publish(message) {
-            const media = await Promise.all(message.media?.map((m) => uploadMedia(client, {}, {
-                file: m.data,
-                description: m.description,
-            })) ?? []);
-            return publishStatus(client, {}, {
-                status: message.content,
-                language: message.language,
-                mediaIds: media.map((m) => m.id),
-            });
-        },
-    };
+  const client = createMastodonClient(options.instanceUrl, {
+    accessToken: options.accessToken
+  });
+  return {
+    validate: validateMessage,
+    async publish(message) {
+      var _a;
+      const media = await Promise.all(
+        ((_a = message.media) == null ? void 0 : _a.map(
+          (m) => uploadMedia(
+            client,
+            {},
+            {
+              file: m.data,
+              description: m.description
+            }
+          )
+        )) ?? []
+      );
+      return publishStatus(
+        client,
+        {},
+        {
+          status: message.content,
+          language: message.language,
+          mediaIds: media.map((m) => m.id)
+        }
+      );
+    }
+  };
 }
+async function publish(message, options) {
+  if (message.language && !iso_639_1__WEBPACK_IMPORTED_MODULE_0__.validate(message.language)) {
+    throw new Error("MESSAGE_LANGUAGE_INVALID");
+  }
+  const validationResults = await Promise.all(
+    options.integrations.map((integration) => integration.validate(message))
+  );
+  const hasValidationError = validationResults.some(
+    (result) => result !== "VALID"
+  );
+  if (hasValidationError) {
+    console.log(validationResults);
+    throw new Error("MESSAGE_VALIDATION_ERROR");
+  }
+  await Promise.all(options.integrations.map((i) => i.publish(message)));
+}
+
+//# sourceMappingURL=index.js.map
 
 
 /***/ }),
