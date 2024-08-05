@@ -5,7 +5,7 @@ import {
 	persistCache,
 } from '@/lib/cache';
 import type { MessagesFromSourceGetter } from '@/lib/sources/common';
-import { getMessages as getMessagesFromJsonFeed } from '@/lib/sources/jsonfeed';
+import { getMessagesFromJsonFeedUrl } from '@/lib/sources/jsonfeed';
 import * as core from '@actions/core';
 import {
 	type PublishOptions as SyndicateOptions,
@@ -38,7 +38,7 @@ const FEED_KEYS = ['jsonfeed'] as const;
 const FEED_PARSE_MAP: {
 	[key in (typeof FEED_KEYS)[number]]: MessagesFromSourceGetter;
 } = {
-	jsonfeed: getMessagesFromJsonFeed,
+	jsonfeed: getMessagesFromJsonFeedUrl,
 } as const;
 
 const integrations = [

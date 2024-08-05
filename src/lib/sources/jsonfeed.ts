@@ -1,9 +1,12 @@
 import { z } from 'zod';
-import type { MessagesFromSourceGetter } from './common.js';
+import type {
+	MessageFromSourceGetterFormatter,
+	MessagesFromSourceGetter,
+} from './common.js';
 
 const jsonFeedAttachmentSchema = z.object({
 	mime_type: z.string().min(3).includes('/'),
-	url: z.string().url(),
+	url: z.string(),
 
 	title: z.string().optional(),
 	size_in_bytes: z.number().optional(),
@@ -11,9 +14,9 @@ const jsonFeedAttachmentSchema = z.object({
 });
 
 const jsonFeedAuthorSchema = z.object({
-	avatar: z.string().url().optional(),
+	avatar: z.string().optional(),
 	name: z.string().optional(),
-	url: z.string().url().optional(),
+	url: z.string().optional(),
 });
 
 const jsonFeedItemSchema = z.object({
@@ -24,31 +27,31 @@ const jsonFeedItemSchema = z.object({
 	content_text: z.string().optional(),
 
 	authors: jsonFeedAuthorSchema.array().optional(),
-	banner_image: z.string().url().optional(),
+	banner_image: z.string().optional(),
 	date_modified: z.string().datetime().optional(),
 	date_published: z.string().datetime().optional(),
-	external_url: z.string().url().optional(),
-	image: z.string().url().optional(),
+	external_url: z.string().optional(),
+	image: z.string().optional(),
 	language: z.string().optional(),
 	summary: z.string().optional(),
 	tags: z.string().array().optional(),
 	title: z.string().optional(),
-	url: z.string().url().optional(),
+	url: z.string().optional(),
 	attachments: jsonFeedAttachmentSchema.array().optional(),
 });
 
 const jsonFeedSchema = z.object({
-	version: z.string().startsWith('https://jsonfeed.org/version/').url(),
+	version: z.string().startsWith('https://jsonfeed.org/version/'),
 	title: z.string(),
 	items: jsonFeedItemSchema.array(),
 
 	authors: jsonFeedAuthorSchema.array().optional(),
 	description: z.string().optional(),
 	expired: z.boolean().optional(),
-	favicon: z.string().url().optional(),
-	feed_url: z.string().url().optional(),
-	home_page_url: z.string().url().optional(),
-	icon: z.string().url().optional(),
+	favicon: z.string().optional(),
+	feed_url: z.string().optional(),
+	home_page_url: z.string().optional(),
+	icon: z.string().optional(),
 	language: z.string().optional(),
 	next_url: z.string().optional(),
 	user_comment: z.string().optional(),
@@ -57,7 +60,9 @@ const jsonFeedSchema = z.object({
 	author: jsonFeedAuthorSchema.optional(),
 });
 
-export const getMessages: MessagesFromSourceGetter = async (
+export type JsonFeed = z.infer<typeof jsonFeedSchema>;
+
+export const getMessagesFromJsonFeedUrl: MessagesFromSourceGetter = async (
 	url,
 	{ format, filter },
 ) => {
@@ -66,19 +71,36 @@ export const getMessages: MessagesFromSourceGetter = async (
 		const json = await response.json();
 		const feed = jsonFeedSchema.parse(json);
 
-		return feed.items
-			.map((item) => {
-				const contentMessage = item.content_text ?? item.content_html ?? '';
-				const contentUrl = item.url ?? '';
+		const baseUrl = new URL(feed.feed_url ?? feed.home_page_url ?? url);
 
-				return {
-					id: item.id,
-					language: item.language ?? feed.language ?? undefined,
-					content: format(contentMessage, contentUrl ?? ''),
-				};
-			})
-			.filter(filter);
+		return getMessagesFromJsonFeed(feed, {
+			baseUrl,
+			format,
+		}).filter(filter);
 	} catch (error) {
+		console.error(error);
 		throw new Error(`Unable to read feed ${url}`);
 	}
+};
+
+export const getMessagesFromJsonFeed = (
+	feed: JsonFeed,
+	{
+		baseUrl,
+		format,
+	}: {
+		baseUrl: URL;
+		format: MessageFromSourceGetterFormatter;
+	},
+) => {
+	return feed.items.map((item) => {
+		const contentMessage = item.content_text ?? item.content_html ?? '';
+		const contentUrl = new URL(item.url ?? '/', baseUrl);
+
+		return {
+			id: item.id,
+			language: item.language ?? feed.language ?? undefined,
+			content: format(contentMessage, contentUrl.toString()),
+		};
+	});
 };
