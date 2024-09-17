@@ -95,6 +95,10 @@ try {
 
 	let isMessageFailed = false;
 
+	core.info(
+		`Syndicating ${messages.length} messages to ${options.integrations.length} platforms`,
+	);
+
 	for (const message of messages) {
 		try {
 			await syndicate(message, options);
