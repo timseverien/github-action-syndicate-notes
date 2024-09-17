@@ -33,7 +33,7 @@ export function addMessageToCache(
 export function createMessageFilter(cache: CacheData) {
 	return (message: Message) => {
 		// Message is explicitly included in syndicated items
-		if (!cache.syndicatedItems.has(message.id)) return false;
+		if (cache.syndicatedItems.has(message.id)) return false;
 
 		// Message was published before last syndication
 		if (
