@@ -14,7 +14,7 @@ const cacheDataSchema = z.object({
 export type CacheData = z.infer<typeof cacheDataSchema>;
 
 function getCacheFilePath(directory: string): string {
-	return path.relative(directory, CACHE_FILE_NAME);
+	return path.resolve(directory, CACHE_FILE_NAME);
 }
 
 export function addMessageToCache(
