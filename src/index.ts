@@ -81,7 +81,7 @@ try {
 			.replace(/{{url}}/g, url)
 			.trim();
 
-	const cache = await getCache(cacheDirectory);
+	let cache = await getCache(cacheDirectory);
 	const filterMessage = createMessageFilter(cache);
 
 	const messages = await FEED_PARSE_MAP[feedType](feedUrl, {
@@ -113,7 +113,7 @@ try {
 		}
 
 		try {
-			addMessageToCache(cache, message);
+			cache = addMessageToCache(cache, message);
 			await persistCache(cacheDirectory, cache);
 		} catch (error) {
 			core.error('Unable to save to cache');
