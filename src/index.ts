@@ -101,7 +101,6 @@ try {
 
 	// Cache is empty — this could be first run, so let's persist cache so next run has a starting point
 	if (cache.syndicatedItems.size === 0) {
-		core.info('This looks like your first run!');
 		await persistCache(cacheDirectory, cache);
 	}
 
