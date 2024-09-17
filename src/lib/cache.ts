@@ -65,6 +65,7 @@ export async function persistCache(directory: string, cache: CacheData) {
 	const cacheFilePath = getCacheFilePath(directory);
 
 	try {
+		await fs.ensureDir(cacheFilePath);
 		await fs.writeFile(cacheFilePath, stringify(cache));
 	} catch (error) {
 		throw new Error(`Unable to write cache (${(error as Error).message})`);
