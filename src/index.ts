@@ -99,6 +99,11 @@ try {
 		`Syndicating ${messages.length} messages to ${options.integrations.length} platforms`,
 	);
 
+	// Cache is empty — this could be first run, so let's persist cache so next run has a starting point
+	if (cache.syndicatedItems.size === 0) {
+		await persistCache(cacheDirectory, cache);
+	}
+
 	for (const message of messages) {
 		try {
 			await syndicate(message, options);
